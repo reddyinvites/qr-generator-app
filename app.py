@@ -1,9 +1,18 @@
+import streamlit as st
 import qrcode
+from io import BytesIO
 
-data = "https://your-website-link.com"
+st.title("🔳 QR Code Generator")
 
-qr = qrcode.make(data)
+data = st.text_input("Enter your link")
 
-qr.save("my_qr.png")
-
-print("QR Code Generated Successfully!")
+if st.button("Generate QR"):
+    if data:
+        qr = qrcode.make(data)
+        
+        buf = BytesIO()
+        qr.save(buf, format="PNG")
+        
+        st.image(buf.getvalue())
+    else:
+        st.warning("Enter a link")
